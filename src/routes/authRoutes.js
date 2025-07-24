@@ -9,6 +9,7 @@ router.route('/profile')
     .patch(auth, authCtrl.updateInfo)
 
 router.post('/login', authCtrl.login)
+router.post('/register', authCtrl.register)
 router.get('/logout', authCtrl.logout)
 router.post('/refresh_token', authCtrl.refreshToken)
 

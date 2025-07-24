@@ -1,18 +1,21 @@
 import jwt from "jsonwebtoken";
+import User from "../models/userModel.js"
 
-const auth = (req, res, next) =>{
+const auth = async (req, res, next) => {
     try {
         const token = req.header("Authorization")
-        if(!token) return res.status(400).json({msg: "Invalid Authentication"})
+        if (!token) return res.status(401).json({message: "No Token. Access denied!"});
 
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) =>{
-            if(err) return res.status(400).json({msg: "Invalid Authentication"})
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            req.user = user
-            next()
-        })
+        const user = await User.findById(decoded.userId).select("-password");
+        
+        if (!user) return res.status(401).json({message: "Invalid authentication."});
+
+        req.user = user;
+        next();
     } catch (err) {
-        return res.status(500).json({msg: err.message})
+        return res.status(500).json({ msg: err.message })
     }
 }
 
