@@ -7,7 +7,7 @@ const perkaraCtrl = {
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
 
-            const perkara = await Perkara.find({ isDeleted: false }).select('-isDeleted')
+            const perkara = await Perkara.find({ isDeleted: false })
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit);
