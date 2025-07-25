@@ -4,13 +4,13 @@ import User from "../models/userModel.js"
 const auth = async (req, res, next) => {
     try {
         const token = req.header("Authorization")
-        if (!token) return res.status(401).json({message: "No Token. Access denied!"});
+        if (!token) return res.status(401).json({msg: "No Token. Access denied!"});
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        console.log(decoded)
+        const user = await User.findById(decoded.user).select("-password");
 
-        const user = await User.findById(decoded.userId).select("-password");
-        
-        if (!user) return res.status(401).json({message: "Invalid authentication."});
+        if (!user) return res.status(401).json({msg: "Invalid authentication."});
 
         req.user = user;
         next();

@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import "dotenv/config";
 
 import authRoutes from "./routes/authRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
+import jurusitaRoutes from "./routes/jurusitaRouter.js"
 
 const app = express();
 app.use(express.json());
@@ -19,6 +21,8 @@ app.get("/", (req, res) => {
 
 // routes
 app.use('/api', authRoutes)
+app.use('/api', userRoutes)
+app.use('/api', jurusitaRoutes)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

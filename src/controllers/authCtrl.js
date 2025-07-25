@@ -1,12 +1,11 @@
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js"
 
 const createAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '11m' })
+    return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '11m' })
 }
 const createRefreshToken = (user) => {
-    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+    return jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 
 const authCtrl = {
@@ -39,7 +38,7 @@ const authCtrl = {
 
             await user.save();
 
-            const accesstoken = createAccessToken({ id: user._id })
+            const accesstoken = createAccessToken(user._id)
 
             res.status(201).json({
                 token: accesstoken,
@@ -72,8 +71,8 @@ const authCtrl = {
             if (!isPasswordCorrect) return res.status(400).json({ msg: "Invalid credentials." });
 
             // If login success , create access token and refresh token
-            const accesstoken = createAccessToken({ id: user._id })
-            const refreshtoken = createRefreshToken({ id: user._id })
+            const accesstoken = createAccessToken(user._id)
+            const refreshtoken = createRefreshToken(user._id)
 
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
@@ -131,8 +130,7 @@ const authCtrl = {
                     _id: user._id,
                     name: user.name,
                     email: user.email,
-                    role: user.role,
-                    accesstoken: accesstoken
+                    role: user.role
                 });
         } catch (error) {
             res.status(500).json({ msg: error.message })
@@ -157,7 +155,30 @@ const authCtrl = {
         } catch (error) {
             res.status(500).json({ msg: error.message })
         }
-    }
+    },
+    changePassword: async (req, res) => {
+        try {
+            const { oldPassword, newPassword } = req.body;
+
+            const user = User.findOne({ _id: req.user.id });
+            const isOldPasswordCorrect = await user.comparePassword(oldPassword);
+            if (!isOldPasswordCorrect) return res.status(400).json({ message: "Invalid credentials." });
+
+            if (newPassword && newPassword.length < 6)
+                return res.status(400).json({ msg: "Password's length is minimal 6 characters." })
+
+            // Password Encryption
+            const passwordHash = await bcrypt.hash(newPassword, 10)
+
+            await User.findOneAndUpdate({ _id: req.user.id }, {
+                password: passwordHash
+            }, { new: true })
+
+            res.status(200).json({ message: "Password updated" })
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    },
 }
 
 export default authCtrl;
