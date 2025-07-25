@@ -1,21 +1,22 @@
 import express from 'express'
 
-import protectRoute from '../middlewares/authMiddleware.js';
-import authAdmin from '../middlewares/authAdminMiddleware.js';
-import { jurusitaCtrl } from '../controllers/jurusitaCtrl.js';
+import auth from '../middleware/auth.js';
+import authAdmin from '../middleware/authAdmin.js';
+import jurusitaCtrl from '../controllers/jurusitaCtrl.js';
 
 
 const router = express.Router();
 
 router.route('/jurusita')
-    .get(protectRoute, authAdmin, jurusitaCtrl.getAll)
-    .post(protectRoute, authAdmin, jurusitaCtrl.create)
+    .get(auth, authAdmin, jurusitaCtrl.getAll)
+    .post(auth, authAdmin, jurusitaCtrl.createOne)
 
 router.route('/jurusita/:id')
-    .get(protectRoute, authAdmin, jurusitaCtrl.getOne)
-    .put(protectRoute, authAdmin, jurusitaCtrl.updateOne)
-    .patch(protectRoute, authAdmin, jurusitaCtrl.deleteOne)
+    .get(auth, authAdmin, jurusitaCtrl.getOne)
+    .patch(auth, authAdmin, jurusitaCtrl.updateOne)
 
-router.patch('/jurusita/:id/activate', protectRoute, authAdmin, jurusitaCtrl.activateOne)
+router.put('/jurusita/:id/activate', auth, authAdmin, jurusitaCtrl.activateOne)
 
-    
+router.put('/jurusita/:id/delete', auth, authAdmin, jurusitaCtrl.deleteOne)
+
+export default router;

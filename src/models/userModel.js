@@ -27,11 +27,13 @@ const userSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false
     },
     isDeleted: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false
     }
 },{
     timestamps: true

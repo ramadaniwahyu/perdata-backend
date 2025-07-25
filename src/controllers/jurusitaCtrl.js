@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Js from "../models/jurusitaModel.js";
+import Js from "../models/jsModel.js";
 
-export const jurusitaCtrl = {
+const jurusitaCtrl = {
     getAll: async (req, res) => {
         try {
             const page = req.query.page || 1;
@@ -25,7 +25,7 @@ export const jurusitaCtrl = {
             res.status(500).json({ message: error.message });
         }
     },
-    create: async (req, res) => {
+    createOne: async (req, res) => {
         try {
             const { name, nip, desc } = req.body;
 
@@ -55,10 +55,10 @@ export const jurusitaCtrl = {
         }
     },
     updateOne: async (req, res) => {
-        const { name, nip, desc, isActive } = req.body;
+        const { name, nip, desc } = req.body;
 
         const jurusita = await Js.findOneAndUpdate({ _id: req.params.id }, {
-            name, nip, desc, isActive
+            name, nip, desc
         }, { new: true })
 
         res.status(200).json(jurusita)
@@ -95,3 +95,5 @@ export const jurusitaCtrl = {
         }
     },
 };
+
+export default jurusitaCtrl;

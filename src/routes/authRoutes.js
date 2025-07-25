@@ -12,6 +12,6 @@ router.route('/profile')
 router.post('/login', authCtrl.login)
 router.post('/register', authCtrl.register)
 router.get('/logout', authCtrl.logout)
-router.post('/refresh_token', authCtrl.refreshToken)
+router.get('/refresh_token', authCtrl.refreshToken)
 
 export default router;

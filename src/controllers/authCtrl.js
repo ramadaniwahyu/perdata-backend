@@ -123,7 +123,7 @@ const authCtrl = {
     },
     getInfo: async (req, res) => {
         try {
-            const user = await User.findById(req.user.id).select('-password -is_admin -is_active');
+            const user = await User.findById(req.user.id).select('-password');
             if (!user) return res.status(400).json({ msg: "User is not exist." });
 
             res.json({

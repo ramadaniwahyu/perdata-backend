@@ -8,7 +8,7 @@ const userCtrl = {
             const limit = req.query.limit || 5;
             const skip = (page - 1) * limit;
 
-            const users = await User.find({ isDeleted: false }).select('-password -isDeleted')
+            const users = await User.find({ isDeleted: false }).select('-password')
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit);
