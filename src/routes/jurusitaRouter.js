@@ -1,7 +1,6 @@
 import express from 'express'
 
-import auth from '../middleware/auth.js';
-import authAdmin from '../middleware/authAdmin.js';
+import {auth, authAdmin} from '../middleware/auth.js';
 import jurusitaCtrl from '../controllers/jurusitaCtrl.js';
 
 

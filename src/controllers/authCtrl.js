@@ -2,16 +2,16 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js"
 
 const createAccessToken = (user) => {
-    return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '11m' })
+    return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
 }
 const createRefreshToken = (user) => {
-    return jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+    return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 
 const authCtrl = {
     register: async (req, res) => {
         try {
-            const { email, name, password } = req.body;
+            const { email, name, password, profileImage } = req.body;
 
             if (!name || !email || !password) {
                 return res.status(400).json({ msg: "All field is required!" })
@@ -30,8 +30,6 @@ const authCtrl = {
                 return res.status(400).json({ msg: "Email already exists" })
             }
 
-            const profileImage = `https://robohash.org/${name}`;
-
             const user = new User({
                 email, password, name, profileImage
             });
@@ -40,15 +38,16 @@ const authCtrl = {
 
             const accesstoken = createAccessToken(user._id)
 
-            res.status(201).json({
-                token: accesstoken,
-                user: {
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    profileImage: user.profileImage
-                },
-            });
+            // res.status(201).json({
+            //     token: accesstoken,
+            //     user: {
+            //         _id: user._id,
+            //         name: user.name,
+            //         email: user.email,
+            //         profileImage: user.profileImage
+            //     },
+            // });
+            res.json({ success: true, msg: "User created. Please login." })
 
         } catch (error) {
             res.status(500).json({ msg: error.message })
@@ -64,7 +63,7 @@ const authCtrl = {
             if (!user) return res.status(400).json({ msg: "User does not exist." });
 
             //check user if activated
-            if (!user.isActive) return res.status(403).json({msg: "User is inactive."})
+            if (!user.isActive) return res.status(403).json({ msg: "User is inactive." })
 
             //check password is correct
             const isPasswordCorrect = await user.comparePassword(password);
@@ -81,11 +80,14 @@ const authCtrl = {
             })
 
             res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                accesstoken: accesstoken
+                token: accesstoken,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    profileImage: user.profileImage,
+                    role: user.role,
+                },
             });
         } catch (error) {
             res.status(500).json({ msg: error.message })
@@ -110,11 +112,14 @@ const authCtrl = {
                 const accesstoken = createAccessToken({ id: user.id })
 
                 res.json({
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    accesstoken: accesstoken
+                    token: accesstoken,
+                    user: {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        profileImage: user.profileImage,
+                        role: user.role,
+                    },
                 });
             })
         } catch (error) {
@@ -127,31 +132,32 @@ const authCtrl = {
             if (!user) return res.status(400).json({ msg: "User is not exist." });
 
             res.json({
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role
-                });
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profileImage: user.profileImage
+            });
         } catch (error) {
             res.status(500).json({ msg: error.message })
         }
     },
     updateInfo: async (req, res) => {
         try {
-             const { name, email, password } = req.body;
+            const { name, email, password, profileImage } = req.body;
 
-             if (name.length < 3) 
+            if (name.length < 3)
                 return res.status(400).json({ msg: "Name should be at least 3 characters long." })
-            
+
 
             if (password.length < 6)
                 return res.status(400).json({ msg: "Password's length is minimal 6 characters." })
 
             await User.findByIdAndUpdate({ _id: req.user.id }, {
-                name, email, password
-            }) 
-            
-            res.json({msg: "Profil updated."})
+                name, email, password, profileImage
+            })
+
+            res.json({ msg: "Profil updated." })
         } catch (error) {
             res.status(500).json({ msg: error.message })
         }

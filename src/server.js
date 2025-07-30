@@ -9,6 +9,9 @@ import userRoutes from "./routes/userRoutes.js"
 import jurusitaRoutes from "./routes/jurusitaRouter.js"
 import perkaraRoutes from "./routes/perkaraRoutes.js"
 
+import path from "path"
+import { fileURLToPath } from 'url';
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser())
@@ -25,6 +28,11 @@ app.use('/api', authRoutes)
 app.use('/api', userRoutes)
 app.use('/api', jurusitaRoutes)
 app.use('/api', perkaraRoutes)
+
+// Serve uploads folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

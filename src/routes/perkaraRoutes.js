@@ -1,6 +1,5 @@
 import express from "express"
-import auth from "../middleware/auth.js"
-import authAdmin from "../middleware/authAdmin.js"
+import {auth, authAdmin} from "../middleware/auth.js"
 import perkaraCtrl from "../controllers/perkaraCtrl.js";
 
 const router = express.Router();
