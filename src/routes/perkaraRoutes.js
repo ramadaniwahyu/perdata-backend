@@ -10,7 +10,8 @@ router.route('/perkara')
 
 router.route('/perkara/:id')
     .get(auth, authAdmin, perkaraCtrl.getOne)
-    .patch(auth, authAdmin, perkaraCtrl.updateOne);
+    .patch(auth, authAdmin, perkaraCtrl.updateOne)
+    .post(auth, authAdmin, perkaraCtrl.deleteOne);
 
 router.patch('/perkara/:id/delete', auth, authAdmin, perkaraCtrl.deleteOne);
 

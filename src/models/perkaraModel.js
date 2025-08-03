@@ -6,6 +6,13 @@ const riwayatSchema = new mongoose.Schema({
 })
 
 const perkaraSchema = new mongoose.Schema({
+    klasifikasi: {
+        type: String,
+        required: true
+    },
+    jenis: {
+        type: String,
+    },
     nomor: {
         type: Number,
         required: true

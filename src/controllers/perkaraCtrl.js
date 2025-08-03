@@ -26,10 +26,10 @@ const perkaraCtrl = {
     },
     createOne: async (req, res) => {
         try {
-            const { nomor, kodePerkara, tahun, kodeSatker, tglDaftar } = req.body;
+            const { klasifikasi, jenis, nomor, kodePerkara, tahun, kodeSatker, tglDaftar } = req.body;
 
             const perkara = new Perkara({
-                nomor, kodePerkara, tahun, kodeSatker, tglDaftar
+                klasifikasi, jenis, nomor, kodePerkara, tahun, kodeSatker, tglDaftar
             });
 
             await perkara.save();

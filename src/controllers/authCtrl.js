@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js"
 
 const createAccessToken = (user) => {
-    return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+    return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 }
 const createRefreshToken = (user) => {
     return jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })

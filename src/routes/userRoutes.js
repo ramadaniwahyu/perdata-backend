@@ -10,6 +10,8 @@ router.route('/users')
 router.route('/users/:id')
     .get(auth, authAdmin, userCtrl.getOneUser)
     .patch(auth, authAdmin, userCtrl.updateUser)
+    .post(auth, authAdmin, userCtrl.activateUser)
+    .put(auth, authAdmin, userCtrl.deleteUser)
 
 router.post('/users/:id/activate', auth, authAdmin, userCtrl.activateUser)
 
