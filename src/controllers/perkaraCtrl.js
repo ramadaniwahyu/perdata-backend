@@ -6,8 +6,14 @@ const perkaraCtrl = {
             const page = req.query.page || 1;
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
+            const klasifikasi = req.query.klasifikasi;
+            let filter ={ isDeleted: false }
 
-            const perkara = await Perkara.find({ isDeleted: false })
+            if (klasifikasi) {
+                filter.klasifikasi = klasifikasi
+            }
+
+            const perkara = await Perkara.find(filter)
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit);
