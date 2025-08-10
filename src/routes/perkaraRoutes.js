@@ -13,6 +13,7 @@ router.route('/perkara/:id')
     .patch(auth, authAdmin, perkaraCtrl.updateOne)
     .post(auth, authAdmin, perkaraCtrl.deleteOne);
 
+router.patch('/perkara/:id/riwayat', auth, authAdmin, perkaraCtrl.riwayatOne);    
 router.patch('/perkara/:id/delete', auth, authAdmin, perkaraCtrl.deleteOne);
 
 export default router;

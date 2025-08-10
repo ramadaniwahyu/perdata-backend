@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 
 const riwayatSchema = new mongoose.Schema({
     tgl: Date,
-    desc: String
+    tahapan: String,
+    desc: String,
+    attachment: []
 })
 
 const perkaraSchema = new mongoose.Schema({

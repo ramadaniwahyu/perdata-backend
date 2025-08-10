@@ -22,6 +22,6 @@ const riwayatPerkaraSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const RiwayatPerkara= mongoose.model('JenisPerkara', riwayatPerkaraSchema)
+const RiwayatPerkara= mongoose.model('RiwayatPerkara', riwayatPerkaraSchema)
 
 export default RiwayatPerkara;
