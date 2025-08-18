@@ -27,10 +27,10 @@ const jurusitaCtrl = {
     },
     createOne: async (req, res) => {
         try {
-            const { name, nip, desc } = req.body;
+            const { jabatan, name, nip, desc, jsImage } = req.body;
 
             const jurusita = new Js({
-                name, nip, desc
+                jabatan, name, nip, desc, jsImage
             });
 
             await jurusita.save();
@@ -55,10 +55,10 @@ const jurusitaCtrl = {
         }
     },
     updateOne: async (req, res) => {
-        const { name, nip, desc } = req.body;
+        const { jabatan, name, nip, desc, jsImage } = req.body;
 
         const jurusita = await Js.findOneAndUpdate({ _id: req.params.id }, {
-            name, nip, desc
+            jabatan, name, nip, desc, jsImage
         }, { new: true })
 
         res.status(200).json(jurusita)

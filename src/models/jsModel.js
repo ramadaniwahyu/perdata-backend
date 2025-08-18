@@ -12,6 +12,14 @@ const jsSchema = new mongoose.Schema({
     desc: {
         type: String
     },
+    jabatan: {
+        type: String,
+        required: true
+    },
+    jsImage: {
+        type: String,
+        default: ""
+    },
     isActive: {
         type: Boolean,
         default: false,
