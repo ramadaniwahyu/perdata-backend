@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const panggilanSchema = new mongoose.Schema({
-    jenis_perkara: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'JenisPerkara'
-    },
     nomor_perkara: {
         type: String,
         required: true,
@@ -18,8 +14,7 @@ const panggilanSchema = new mongoose.Schema({
         type: String
     },
     jenis_panggilan: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'JenisPanggilan'
+        type: String
     },
     tgl_kirim: {
         type: Date
