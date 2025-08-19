@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const panggilanSchema = new mongoose.Schema({
-    nomor_perkara: {
+    nomorPerkara: {
         type: String,
         required: true,
         trim: true
@@ -13,19 +13,20 @@ const panggilanSchema = new mongoose.Schema({
     alamat: {
         type: String
     },
-    jenis_panggilan: {
-        type: String
+    jenisPanggilan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'JenisPanggilan'
     },
-    tgl_kirim: {
+    tglKirim: {
         type: Date
     },
-    nomor_kirim:{
+    nomorKirim:{
         type: String
     },
-    tgl_dilaksanakan: {
+    tglPelaksanaan: {
         type: Date
     },
-    hasil_panggilan: {
+    hasilPanggilan: {
         type: String
     },
     desc: {
@@ -33,7 +34,7 @@ const panggilanSchema = new mongoose.Schema({
     },
     jurusita: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Pegawai'
+        ref: 'Jurusita'
     },
     edoc: {
         type: String
@@ -47,6 +48,6 @@ const panggilanSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Panggilan = mongoose.model('Panggilan', panggilanmongoose.Schema)
+const Panggilan = mongoose.model('Panggilan', panggilanSchema)
 
 export default Panggilan;

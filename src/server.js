@@ -8,8 +8,8 @@ import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import jurusitaRoutes from "./routes/jurusitaRouter.js"
 import perkaraRoutes from "./routes/perkaraRoutes.js"
-// import uploadRoutes from "./routes/uploadRoutes.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
+import panggilanRoutes from "./routes/panggilanRoutes.js"
 
 import path from "path"
 import { fileURLToPath } from 'url';
@@ -31,6 +31,7 @@ app.use('/api', userRoutes)
 app.use('/api', jurusitaRoutes)
 app.use('/api', perkaraRoutes)
 app.use('/api', uploadRoutes)
+app.use('/api', panggilanRoutes)
 
 // Serve uploads folder
 const __filename = fileURLToPath(import.meta.url);
