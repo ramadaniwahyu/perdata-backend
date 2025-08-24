@@ -1,14 +1,30 @@
 import mongoose from "mongoose";
-import Js from "../models/jsModel.js";
+import Jurusita from "../models/jsModel.js";
 
 const jurusitaCtrl = {
+    get: async (req, res) => {
+        try {
+            const jurusita = await Jurusita.find({ isDeleted: false });
+            let arr = [];
+            jurusita.map((i) => {
+                let obj = {};
+                obj.label = i.name;
+                obj.value = i._id;
+
+                arr.push(obj)
+            })
+            res.status(200).json(arr)
+        } catch (error) {
+            res.status(500).json({ msg: "Ada kesalahan menarik jurusita", desc: error.message });
+        }
+    },
     getAll: async (req, res) => {
         try {
             const page = req.query.page || 1;
             const limit = req.query.limit || 10;
             const skip = (page - 1) * limit;
 
-            const jurusita = await Js.find({ isDeleted: false }).select('-isDeleted')
+            const jurusita = await Jurusita.find({ isDeleted: false }).select('-isDeleted')
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit);
@@ -29,7 +45,7 @@ const jurusitaCtrl = {
         try {
             const { jabatan, name, nip, desc, jsImage } = req.body;
 
-            const jurusita = new Js({
+            const jurusita = new Jurusita({
                 jabatan, name, nip, desc, jsImage
             });
 
@@ -43,7 +59,7 @@ const jurusitaCtrl = {
         try {
             const validObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
             if (validObjectId) {
-                const jurusita = await Js.findOne({ _id: req.params.id });
+                const jurusita = await Jurusita.findOne({ _id: req.params.id });
                 if (!jurusita) return res.status(404).json({ msg: "Jurusita is not exist." })
 
                 res.json(jurusita)
@@ -57,7 +73,7 @@ const jurusitaCtrl = {
     updateOne: async (req, res) => {
         const { jabatan, name, nip, desc, jsImage } = req.body;
 
-        const jurusita = await Js.findOneAndUpdate({ _id: req.params.id }, {
+        const jurusita = await Jurusita.findOneAndUpdate({ _id: req.params.id }, {
             jabatan, name, nip, desc, jsImage
         }, { new: true })
 
@@ -85,7 +101,7 @@ const jurusitaCtrl = {
 
             if (isDeleted == null) res.status(400).json({ message: "There is no required field." });
 
-            await Js.findOneAndUpdate({ _id: req.params.id }, {
+            await Jurusita.findOneAndUpdate({ _id: req.params.id }, {
                 isDeleted
             }, { new: true })
 

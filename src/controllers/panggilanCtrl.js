@@ -9,8 +9,8 @@ const panggilanCtrl = {
             const skip = (page - 1) * limit;
 
             const panggilan = await Panggilan.find({ isDeleted: false })
-                .populate({ jurusita, jenisPanggilan })
-                .sort({ createdAt: -1 })
+                .populate('jenisPanggilan jurusita')
+                .sort({ tglKirim: -1 })
                 .skip(skip)
                 .limit(limit);
 
@@ -23,14 +23,14 @@ const panggilanCtrl = {
                 totalPages: Math.ceil(total / limit)
             });
         } catch (error) {
-            res.status(500).json({ msg: error.message });
+            res.status(500).json({ msg: "Ada kesalahan", desc: error.message });
         }
     },
     create: async (req, res) => {
         try {
-            const { jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat } = req.body
+            const { jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat, tglSidang, dueDate } = req.body
             const panggilan = new Panggilan({
-                jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat
+                jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat, tglSidang, dueDate
             });
 
             await panggilan.save();
@@ -57,10 +57,10 @@ const panggilanCtrl = {
     },
     update: async (req, res) => {
         try {
-            const { jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat } = req.body;
+            const { jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat, tglSidang, dueDate } = req.body;
 
             const panggilan = await Panggilan.findOneAndUpdate({ _id: req.params.id }, {
-                jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat
+                jenisPanggilan, tglKirim, jurusita, nomorPerkara, pihak, alamat, tglSidang, dueDate
             }, { new: true });
 
             res.status(200).json(panggilan);
@@ -76,7 +76,7 @@ const panggilanCtrl = {
                 isDeleted
             }, { new: true });
 
-            res.status(200).json({msg: "Panggilan sudah dihapus."});
+            res.status(200).json({ msg: "Panggilan telah berhasil dihapus." });
         } catch (error) {
             return res.status(500).json({ msg: "Ada kesalahan", desc: error.message });
         }

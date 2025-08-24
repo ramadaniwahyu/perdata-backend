@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jsSchema = new mongoose.Schema({
+const jurusitaSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -34,6 +34,6 @@ const jsSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Js = mongoose.model('Jurusita', jsSchema);
+const Jurusita = mongoose.model('Jurusita', jurusitaSchema);
 
-export default Js;
+export default Jurusita;

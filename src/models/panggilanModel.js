@@ -20,6 +20,16 @@ const panggilanSchema = new mongoose.Schema({
     tglKirim: {
         type: Date
     },
+    tglSidang: {
+        type: Date
+    },
+    dueDate: {
+        type: Date
+    },
+    jurusita: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Jurusita'
+    },
     nomorKirim:{
         type: String
     },
@@ -32,11 +42,11 @@ const panggilanSchema = new mongoose.Schema({
     desc: {
         type: String
     },
-    jurusita: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Jurusita'
+    
+    fileResi: {
+        type: String
     },
-    edoc: {
+    fileTracking: {
         type: String
     },
     isDeleted: {

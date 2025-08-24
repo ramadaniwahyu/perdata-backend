@@ -14,6 +14,8 @@ router.route('/jurusita/:id')
     .get(auth, authAdmin, jurusitaCtrl.getOne)
     .patch(auth, authAdmin, jurusitaCtrl.updateOne)
 
+router.get('/jurusita-all', auth, jurusitaCtrl.get)    
+
 router.put('/jurusita/:id/activate', auth, authAdmin, jurusitaCtrl.activateOne)
 
 router.put('/jurusita/:id/delete', auth, authAdmin, jurusitaCtrl.deleteOne)

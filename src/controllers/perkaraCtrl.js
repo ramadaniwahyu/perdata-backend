@@ -9,6 +9,17 @@ let riwayat_daftar = {
 }
 
 const perkaraCtrl = {
+    getNomor: async (req, res) => {
+        let filter = { isDeleted: false }
+        const list = await Perkara.find(filter).sort({ tahun: -1 })
+
+        list.map(perkara => {
+            perkara.nomor_perkara = perkara.nomor + "/" + perkara.kodePerkara + "/" + perkara.tahun + "/" + perkara.kodeSatker;
+            return perkara;
+        })
+
+        res.send(list)
+    },
     getAll: async (req, res) => {
         try {
             const page = req.query.page || 1;
@@ -130,7 +141,7 @@ const perkaraCtrl = {
                 isDeleted
             }, { new: true })
 
-            res.status(200).json(perkara)
+            res.status(200).json({msg: "Perkara telah dihapus"})
         } catch (error) {
             res.status(500).json({ msg: error.message })
         }
