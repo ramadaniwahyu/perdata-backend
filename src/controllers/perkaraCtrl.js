@@ -55,7 +55,7 @@ const perkaraCtrl = {
 
             const { klasifikasi, jenis, nomor, kodePerkara, tahun, kodeSatker, tglDaftar } = req.body;
 
-            daftar = {
+            let daftar = {
                 tgl: tglDaftar,
                 tahapan: "Pendaftaran",
                 desc: "",

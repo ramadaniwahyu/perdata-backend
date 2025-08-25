@@ -16,7 +16,8 @@ const jenisPanggilanCtrl = {
                 arr.push(obj)
             })
 
-            res.status(200).json(arr);
+            res.status(200).json(jenisPanggilan);
+            // res.status(200).json(arr);
         } catch (error) {
             res.status(500).json({ msg: "Ada kesalahan", desc: error.message })
         }
