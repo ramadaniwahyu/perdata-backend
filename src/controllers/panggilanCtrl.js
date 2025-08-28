@@ -47,7 +47,7 @@ const panggilanCtrl = {
                 const panggilan = await Js.findOne({ _id: req.params.id });
                 if (!panggilan) return res.status(404).json({ msg: "Panggilan yang anda cari tidak ditemukan." });
 
-                res.json(panggilan);
+                res.status(200).json(panggilan);
             } else {
                 res.status(400).json({ message: "Pastikan panggilan anda valid." });
             }
