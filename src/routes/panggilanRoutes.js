@@ -17,4 +17,8 @@ router.route('/panggilan/:id')
 
 router.put('/panggilan/:id/delete', auth, panggilanCtrl.delete)
 
+router.post('/panggilan/:id/pengiriman', auth, panggilanCtrl.cancelPengiriman)
+
+router.post('/panggilan/:id/pelaksanaan', auth, panggilanCtrl.cancelPelaksanaan)
+
 export default router;
