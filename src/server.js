@@ -11,6 +11,7 @@ import perkaraRoutes from "./routes/perkaraRoutes.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
 import panggilanRoutes from "./routes/panggilanRoutes.js"
 import jenisPanggilanRoutes from "./routes/jenisPanggilanRoutes.js"
+import eksekusiRoutes from "./routes/eksekusiRoutes.js"
 
 import path from "path"
 import { fileURLToPath } from 'url';
@@ -34,6 +35,7 @@ app.use('/api', perkaraRoutes)
 app.use('/api', uploadRoutes)
 app.use('/api', panggilanRoutes)
 app.use('/api', jenisPanggilanRoutes)
+app.use('/api', eksekusiRoutes)
 
 // Serve uploads folder
 const __filename = fileURLToPath(import.meta.url);

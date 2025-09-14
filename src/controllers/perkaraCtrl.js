@@ -24,6 +24,7 @@ const perkaraCtrl = {
         try {
             const page = req.query.page || 1;
             const limit = req.query.limit || 10;
+            const sort = req.query.sort || '-tahun -nomor';
             const skip = (page - 1) * limit;
             const klasifikasi = req.query.klasifikasi;
             let filter = { isDeleted: false }
@@ -32,12 +33,14 @@ const perkaraCtrl = {
                 filter.klasifikasi = klasifikasi
             }
 
+            const allPerkara = await Perkara.find(filter)
+
             const perkara = await Perkara.find(filter)
-                .sort({ createdAt: -1 })
+                .sort(sort)
                 .skip(skip)
                 .limit(limit);
 
-            const total = perkara.length;
+            const total = allPerkara.length;
 
             res.send({
                 perkara,
@@ -62,8 +65,7 @@ const perkaraCtrl = {
                 attachment: []
             }
 
-            riwayat.push(daftar)
-            console.log("riwayat ", riwayat)
+            riwayat.push(daftar);
 
             const perkara = new Perkara({
                 klasifikasi, jenis, nomor, kodePerkara, tahun, kodeSatker, tglDaftar, riwayat

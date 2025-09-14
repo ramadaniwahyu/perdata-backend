@@ -4,7 +4,7 @@ import { auth } from "../middleware/auth.js"
 
 const router = express.Router();
 
-router.post("/upload-docs", auth, uploadDocuments.array("myFiles", 10), (req, res) => {
+router.post("/upload-docs", auth, uploadDocuments.array("myFiles", 20), (req, res) => {
     if (!req.files) {
         return res.status(400).json({ msg: "No documents uploaded." });
     } 
