@@ -1,68 +1,29 @@
 import mongoose from "mongoose";
 import Panggilan from "../models/panggilanModel.js";
 
-class APIfeatures {
-     constructor(query, queryString){
-        this.query = query;
-        this.queryString = queryString;
-    }
-    filtering(){
-       const queryObj = {...this.queryString} //queryString = req.query
-
-       const excludedFields = ['page', 'sort', 'limit']
-       excludedFields.forEach(el => delete(queryObj[el]))
-       
-       let queryStr = JSON.stringify(queryObj)
-       queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, match => '$' + match)
-
-    //    gte = greater than or equal
-    //    lte = lesser than or equal
-    //    lt = lesser than
-    //    gt = greater than
-       this.query.find(JSON.parse(queryStr))
-         
-       return this;
-    }
-
-    sorting(){
-        if(this.queryString.sort){
-            const sortBy = this.queryString.sort.split(',').join(' ')
-            this.query = this.query.sort(sortBy)
-        }else{
-            this.query = this.query.sort('-tgKirim')
-        }
-
-        return this;
-    }
-
-    paginating(){
-        const page = this.queryString.page * 1 || 1
-        const limit = this.queryString.limit * 1 || 10
-        const skip = (page - 1) * limit;
-        this.query = this.query.skip(skip).limit(limit)
-        return this;
-    }
-}
-
 const panggilanCtrl = {
     getAll: async (req, res) => {
         try {
             const page = req.query.page || 1;
-            const limit = req.query.limit || 10;
+            const limit = req.query.limit || 25;
             const skip = (page - 1) * limit;
+            const sort = req.query.sort || '-tglKirim'
+            const tglKirim = req.query.tglKirim;
+            let filter = { isDeleted: false }
 
-            const features = new APIfeatures(Panggilan.find({ isDeleted: false }).populate('jenisPanggilan jurusita'), req.query)
-            .filtering().sorting().paginating()
+            if (tglKirim) {
+                filter.tglKirim = tglKirim
+            }
 
-            const panggilan = await features.query
+            const allPanggilan = await Panggilan.find(filter);
 
-            // const panggilan = await Panggilan.find({ isDeleted: false })
-            //     .populate('jenisPanggilan jurusita')
-            //     .sort({ tglKirim: -1 })
-            //     .skip(skip)
-            //     .limit(limit);
+            const panggilan = await Panggilan.find(filter)
+                .populate('jenisPanggilan jurusita')
+                .sort(sort)
+                .skip(skip)
+                .limit(limit);
 
-            const total = panggilan.length;
+            const total = allPanggilan.length;
 
             res.send({
                 panggilan,
